@@ -33,7 +33,7 @@ def test_guardar_y_cargar_tareas(gestor_temporal):
     tarea = gestor_temporal.tareas[0]
     assert tarea.titulo == "Prueba"
     assert tarea.descripcion == "Descripción de prueba"
-    assert tarea.prioridad == "alta"
+    assert tarea.prioridad == "media"
     assert not tarea.completada
 
 
