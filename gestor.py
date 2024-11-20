@@ -51,35 +51,37 @@ class GestorTareas:
         print("Tarea agregada con éxito.")
         self.limpiar_terminal()
 
-    def listar_tareas(self):
+    def listar_tareas(self, pausar=True):
         print("\nListado de Tareas")
         print("------------------")
         if not self.tareas:
             print("No hay tareas.")
         for i, tarea in enumerate(self.tareas, 1):
             print(f"{i}. {tarea}")
-        input("\nPresione Enter para continuar...")
-        self.limpiar_terminal()
+        if pausar:
+            input("\nPresione Enter para continuar...")
 
-    def completar_tarea(self, indice):
+
+    def completar_tarea(self, indice, pausar=True):
         try:
             self.tareas[indice - 1].completar()
             self.guardar_tareas()
-            print("Tarea completada con éxito.")
+            return "Tarea completada con éxito."
         except IndexError:
-            print("Índice de tarea no válido.")
-        self.listar_tareas()
+            return "Índice de tarea no válido."
+        self.listar_tareas(pausar=pausar)
 
-    def eliminar_tarea(self, indice):
+
+    def eliminar_tarea(self, indice, pausar=True):
         try:
             tarea_eliminada = self.tareas.pop(indice - 1)
             archivo_tarea = os.path.join(self.carpeta, f"Tarea{indice}.json")
             if os.path.exists(archivo_tarea):
                 os.remove(archivo_tarea)
             self.guardar_tareas()
-            print("Tarea eliminada con éxito.")
+            return "Tarea eliminada con éxito."
         except IndexError:
-            print("Índice de tarea no válido.")
+            return "Índice de tarea no válido."
         self.listar_tareas()
 
     def guardar_tareas(self):
@@ -130,8 +132,11 @@ def main():
         elif opcion == "2":
             gestor.listar_tareas()
         elif opcion == "3":
-            indice = int(input("Índice de la tarea a completar: "))
-            gestor.completar_tarea(indice)
+            try:
+                indice = int(input("Índice de la tarea a completar: "))
+                gestor.completar_tarea(indice)
+            except ValueError:
+                print("Por favor, ingrese un número válido.")
         elif opcion == "4":
             indice = int(input("Índice de la tarea a eliminar: "))
             gestor.eliminar_tarea(indice)
