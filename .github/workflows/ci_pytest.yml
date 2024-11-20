@@ -1,4 +1,4 @@
-name: Run Pytest for test_gestor.py
+name: Pytest con test_gestor.py
 
 on:
   push:
