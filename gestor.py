@@ -72,7 +72,10 @@ class GestorTareas:
 
     def eliminar_tarea(self, indice):
         try:
-            self.tareas.pop(indice - 1)
+            tarea_eliminada = self.tareas.pop(indice - 1)
+            archivo_tarea = os.path.join(self.carpeta, f"Tarea{indice}.json")
+            if os.path.exists(archivo_tarea):
+                os.remove(archivo_tarea)
             self.guardar_tareas()
             print("Tarea eliminada con éxito.")
         except IndexError:
