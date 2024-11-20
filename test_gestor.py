@@ -34,7 +34,7 @@ def test_eliminar_tarea(tmpdir):
 
 def test_modificar_tarea(tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
-    gestor.agregar_tarea("Correr", "Correr en el parque", "alta")
+    gestor.agregar_tarea("Correr", "Correr en la cancha de ciclismo", "alta")
 
     # Modificar tarea
     resultado = gestor.modificar_tarea(
