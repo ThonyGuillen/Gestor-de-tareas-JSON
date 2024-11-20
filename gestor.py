@@ -73,16 +73,19 @@ class GestorTareas:
     def eliminar_tarea(self, indice, pausar=True):
         try:
             tarea_eliminada = self.tareas.pop(indice - 1)
-            archivo_tarea = os.path.join(self.carpeta, f"Tarea{indice}.json")
-            if os.path.exists(archivo_tarea):
-                os.remove(archivo_tarea)
             self.guardar_tareas()
             return "Tarea eliminada con éxito."
         except IndexError:
             return "Índice de tarea no válido."
-        self.listar_tareas()
+        self.listar_tareas(pausar=pausar)
 
     def guardar_tareas(self):
+        # Eliminar todos los archivos de tareas existentes
+        for archivo in os.listdir(self.carpeta):
+            if archivo.startswith("Tarea") and archivo.endswith(".json"):
+                os.remove(os.path.join(self.carpeta, archivo))
+        
+        # Guardar las tareas actuales con nombres actualizados
         for i, tarea in enumerate(self.tareas, 1):
             archivo_tarea = os.path.join(self.carpeta, f"Tarea{i}.json")
             with open(archivo_tarea, "w") as f:
