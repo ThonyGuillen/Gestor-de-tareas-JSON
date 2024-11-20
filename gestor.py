@@ -57,14 +57,13 @@ class GestorTareas:
         self.limpiar_terminal()
 
     def listar_tareas(self, pausar=True):
+        limpiar_pantalla()
         print("\nListado de Tareas")
         print("------------------")
         if not self.tareas:
             print("No hay tareas.")
         for i, tarea in enumerate(self.tareas, 1):
             print(f"{i}. {tarea}")
-        if pausar:
-            input("\nPresione Enter para continuar...")
 
     def completar_tarea(self, indice, pausar=True):
         try:
@@ -177,12 +176,14 @@ def main():
                 indice = int(input("Índice de la tarea a completar: "))
                 gestor.completar_tarea(indice)
             except ValueError:
+                limpiar_pantalla()
                 print("Por favor, ingrese un número válido.")
         elif opcion == "4":
             try:
                 indice = int(input("Índice de la tarea a eliminar: "))
                 gestor.eliminar_tarea(indice)
             except ValueError:
+                limpiar_pantalla()
                 print("Por favor, ingrese un número válido.")
         elif opcion == "5":
             if gestor.contar_tareas() == 0:
@@ -191,6 +192,7 @@ def main():
             try:
                 indice = int(input("Índice de la tarea a modificar: "))
                 if indice < 1 or indice > gestor.contar_tareas():
+                    limpiar_pantalla()
                     print("Índice de tarea no válido.")
                     continue
                 nuevo_titulo = input(
@@ -215,12 +217,13 @@ def main():
                 )
             except ValueError:
                 print("Por favor, ingrese un número válido.")
+            limpiar_pantalla()
         elif opcion == "6":
             print("Saliendo del gestor de tareas. ¡Hasta luego!")
             break
         else:
+            limpiar_pantalla()
             print("Opción no válida.")
-            gestor.limpiar_terminal()
 
 
 if __name__ == "__main__":
