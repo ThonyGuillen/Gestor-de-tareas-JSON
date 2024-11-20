@@ -52,11 +52,15 @@ class GestorTareas:
         self.tareas = self.cargar_tareas()
 
     def agregar_tarea(self, titulo, descripcion, prioridad):
+        if prioridad not in ["baja", "media", "alta"]:
+            raise ValueError(f"Prioridad '{prioridad}' no válida. Use 'baja', 'media' o 'alta'.")
+        
         tarea = Tarea(titulo, descripcion, prioridad)
         self.tareas.append(tarea)
         self.guardar_tareas()
         print("Tarea agregada con éxito.")
         self.limpiar_terminal()
+
 
     def listar_tareas(self, pausar=True):
         limpiar_pantalla()
