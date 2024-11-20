@@ -2,12 +2,19 @@ import json
 import os
 from datetime import datetime
 
+
 class Tarea:
-    def __init__(self, titulo, descripcion, prioridad, fecha_creacion=None, completada=False):
+    def __init__(
+        self, titulo, descripcion, prioridad, fecha_creacion=None, completada=False
+    ):
         self.titulo = titulo
         self.descripcion = descripcion
         self.prioridad = prioridad
-        self.fecha_creacion = fecha_creacion if fecha_creacion else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.fecha_creacion = (
+            fecha_creacion
+            if fecha_creacion
+            else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
         self.completada = completada
 
     def completar(self):
@@ -20,15 +27,16 @@ class Tarea:
     @classmethod
     def from_dict(cls, data):
         return cls(
-            titulo=data['titulo'],
-            descripcion=data['descripcion'],
-            prioridad=data['prioridad'],
-            fecha_creacion=data.get('fecha_creacion'),
-            completada=data.get('completada', False)
+            titulo=data["titulo"],
+            descripcion=data["descripcion"],
+            prioridad=data["prioridad"],
+            fecha_creacion=data.get("fecha_creacion"),
+            completada=data.get("completada", False),
         )
 
+
 class GestorTareas:
-    def __init__(self, carpeta='tareas'):
+    def __init__(self, carpeta="tareas"):
         self.carpeta = carpeta
         if not os.path.exists(carpeta):
             os.makedirs(carpeta)
@@ -72,14 +80,14 @@ class GestorTareas:
     def guardar_tareas(self):
         for i, tarea in enumerate(self.tareas, 1):
             archivo_tarea = os.path.join(self.carpeta, f"Tarea{i}.json")
-            with open(archivo_tarea, 'w') as f:
+            with open(archivo_tarea, "w") as f:
                 json.dump(tarea.__dict__, f)
 
     def cargar_tareas(self):
         tareas = []
         for archivo in sorted(os.listdir(self.carpeta)):
             if archivo.startswith("Tarea") and archivo.endswith(".json"):
-                with open(os.path.join(self.carpeta, archivo), 'r') as f:
+                with open(os.path.join(self.carpeta, archivo), "r") as f:
                     data = json.load(f)
                     tareas.append(Tarea.from_dict(data))
         return tareas
@@ -88,7 +96,8 @@ class GestorTareas:
         return len(self.tareas)
 
     def limpiar_terminal(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system("cls" if os.name == "nt" else "clear")
+
 
 def mostrar_menu(gestor):
     print("\nGestor de Tareas")
@@ -100,6 +109,7 @@ def mostrar_menu(gestor):
     print("4. Eliminar tarea")
     print("5. Salir")
 
+
 def main():
     gestor = GestorTareas()
 
@@ -107,25 +117,26 @@ def main():
         mostrar_menu(gestor)
         opcion = input("Seleccione una opción: ")
 
-        if opcion == '1':
+        if opcion == "1":
             titulo = input("Título de la tarea: ")
             descripcion = input("Descripción de la tarea: ")
             prioridad = input("Nivel de prioridad (baja, media, alta): ")
             gestor.agregar_tarea(titulo, descripcion, prioridad)
-        elif opcion == '2':
+        elif opcion == "2":
             gestor.listar_tareas()
-        elif opcion == '3':
+        elif opcion == "3":
             indice = int(input("Índice de la tarea a completar: "))
             gestor.completar_tarea(indice)
-        elif opcion == '4':
+        elif opcion == "4":
             indice = int(input("Índice de la tarea a eliminar: "))
             gestor.eliminar_tarea(indice)
-        elif opcion == '5':
+        elif opcion == "5":
             print("Saliendo del gestor de tareas. ¡Hasta luego!")
             break
         else:
             print("Opción no válida.")
             gestor.limpiar_terminal()
+
 
 if __name__ == "__main__":
     main()
