@@ -79,6 +79,24 @@ class GestorTareas:
             return "Índice de tarea no válido."
         self.listar_tareas(pausar=pausar)
 
+    def modificar_tarea(self, indice, nuevo_titulo=None, nueva_descripcion=None, nueva_prioridad=None, pausar=True):
+        if not self.tareas:
+            return "No hay tareas para modificar. CREA UNA."
+        
+        try:
+            tarea = self.tareas[indice - 1]
+            if nuevo_titulo:
+                tarea.titulo = nuevo_titulo
+            if nueva_descripcion:
+                tarea.descripcion = nueva_descripcion
+            if nueva_prioridad:
+                tarea.prioridad = nueva_prioridad
+            self.guardar_tareas()
+            return "Tarea modificada con éxito."
+        except IndexError:
+            return "Índice de tarea no válido."
+        self.listar_tareas(pausar=pausar)
+
     def guardar_tareas(self):
         # Eliminar todos los archivos de tareas existentes
         for archivo in os.listdir(self.carpeta):
@@ -115,7 +133,8 @@ def mostrar_menu(gestor):
     print("2. Listar tareas")
     print("3. Completar tarea")
     print("4. Eliminar tarea")
-    print("5. Salir")
+    print("5. Modificar tarea")
+    print("6. Salir")
 
 
 def main():
@@ -128,7 +147,12 @@ def main():
         if opcion == "1":
             titulo = input("Título de la tarea: ")
             descripcion = input("Descripción de la tarea: ")
-            prioridad = input("Nivel de prioridad (baja, media, alta): ")
+            while True:
+                prioridad = input("Nivel de prioridad (baja, media, alta): ").lower()
+                if prioridad in ["baja", "media", "alta"]:
+                    break
+                else:
+                    print("Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'.")
             gestor.agregar_tarea(titulo, descripcion, prioridad)
         elif opcion == "2":
             gestor.listar_tareas()
@@ -139,15 +163,35 @@ def main():
             except ValueError:
                 print("Por favor, ingrese un número válido.")
         elif opcion == "4":
-            indice = int(input("Índice de la tarea a eliminar: "))
-            gestor.eliminar_tarea(indice)
+            try:
+                indice = int(input("Índice de la tarea a eliminar: "))
+                gestor.eliminar_tarea(indice)
+            except ValueError:
+                print("Por favor, ingrese un número válido.")
         elif opcion == "5":
+            if gestor.contar_tareas() == 0:
+                print("No hay tareas para modificar. CREA UNA.")
+                continue
+            try:
+                indice = int(input("Índice de la tarea a modificar: "))
+                if indice < 1 or indice > gestor.contar_tareas():
+                    print("Índice de tarea no válido.")
+                    continue
+                nuevo_titulo = input("Nuevo título (dejar en blanco para no modificar): ")
+                nueva_descripcion = input("Nueva descripción (dejar en blanco para no modificar): ")
+                nueva_prioridad = input("Nueva prioridad (baja, media, alta) (dejar en blanco para no modificar): ").lower()
+                if nueva_prioridad and nueva_prioridad not in ["baja", "media", "alta"]:
+                    print("Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'.")
+                    continue
+                gestor.modificar_tarea(indice, nuevo_titulo or None, nueva_descripcion or None, nueva_prioridad or None)
+            except ValueError:
+                print("Por favor, ingrese un número válido.")
+        elif opcion == "6":
             print("Saliendo del gestor de tareas. ¡Hasta luego!")
             break
         else:
             print("Opción no válida.")
             gestor.limpiar_terminal()
-
 
 if __name__ == "__main__":
     main()
