@@ -1,6 +1,6 @@
 [flake8]
-# Define la longitud máxima de una línea
+#Define la longitud máxima de una línea
 max-line-length = 100
 
-# Excluye carpetas específicas del análisis
+#Excluye carpetas específicas del análisis
 exclude = .git,__pycache__
