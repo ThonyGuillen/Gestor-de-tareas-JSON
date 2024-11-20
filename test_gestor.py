@@ -6,12 +6,16 @@ from gestor import Tarea, GestorTareas
 @pytest.fixture
 def gestor_temporal():
     """Crea un gestor de tareas temporal para pruebas."""
-    gestor = GestorTareas(carpeta="tareas_prueba")
+    carpeta = "tareas_prueba"
+    if not os.path.exists(carpeta):
+        os.makedirs(carpeta)
+    gestor = GestorTareas(carpeta=carpeta)
     yield gestor
     # Limpia los archivos generados después de las pruebas
-    for archivo in os.listdir("tareas_prueba"):
-        os.remove(os.path.join("tareas_prueba", archivo))
-    os.rmdir("tareas_prueba")
+    for archivo in os.listdir(carpeta):
+        os.remove(os.path.join(carpeta, archivo))
+    os.rmdir(carpeta)
+
 
 
 def test_agregar_tarea(gestor_temporal):
