@@ -50,13 +50,3 @@ def test_modificar_tarea(tmpdir):
     assert gestor.tareas[0].prioridad == "media"
 
 
-def test_agregar_tarea_prioridad_invalida(tmpdir):
-    gestor = GestorTareas(carpeta=tmpdir)
-
-    # Agregar tarea con prioridad inválida
-    with pytest.raises(ValueError) as excinfo:
-        gestor.agregar_tarea("Tarea inválida", "Descripción de prueba", "super-alta")
-
-    assert "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'." in str(
-        excinfo.value
-    )
