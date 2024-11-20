@@ -22,7 +22,10 @@ class Tarea:
 
     def __str__(self):
         estado = "Completada" if self.completada else "Pendiente"
-        return f"{self.titulo} - {self.descripcion} [Prioridad: {self.prioridad}] [Creada: {self.fecha_creacion}] [{estado}]"
+        return (
+            f"{self.titulo} - {self.descripcion} [Prioridad: {self.prioridad}] "
+            f"[Creada: {self.fecha_creacion}] [{estado}]"
+        )
 
     @classmethod
     def from_dict(cls, data):
@@ -31,7 +34,6 @@ class Tarea:
             descripcion=data["descripcion"],
             prioridad=data["prioridad"],
             fecha_creacion=data.get("fecha_creacion"),
-            completada=data.get("completada", False),
         )
 
 
@@ -70,7 +72,7 @@ class GestorTareas:
 
     def eliminar_tarea(self, indice):
         try:
-            tarea = self.tareas.pop(indice - 1)
+            self.tareas.pop(indice - 1)
             self.guardar_tareas()
             print("Tarea eliminada con éxito.")
         except IndexError:
