@@ -58,3 +58,14 @@ def test_eliminar_tarea(gestor_temporal):
     mensaje = gestor_temporal.eliminar_tarea(1)  # Proporciona el índice directamente
     assert mensaje == "Tarea eliminada con éxito."
     assert len(gestor_temporal.tareas) == 0
+
+
+def test_modificar_tarea(gestor_temporal):
+    """Prueba modificar una tarea en el gestor."""
+    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "media")
+    mensaje = gestor_temporal.modificar_tarea(1, nuevo_titulo="Prueba Modificada", nueva_descripcion="Descripción modificada", nueva_prioridad="alta")
+    assert mensaje == "Tarea modificada con éxito."
+    tarea = gestor_temporal.tareas[0]
+    assert tarea.titulo == "Prueba Modificada"
+    assert tarea.descripcion == "Descripción modificada"
+    assert tarea.prioridad == "alta"
