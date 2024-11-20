@@ -40,9 +40,12 @@ def test_guardar_y_cargar_tareas(gestor_temporal):
 def test_completar_tarea(gestor_temporal):
     """Prueba completar una tarea en el gestor."""
     gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "baja")
-    gestor_temporal.completar_tarea(1, pausar=False)  # Completa la primera tarea sin pausar
+    gestor_temporal.completar_tarea(
+        1, pausar=False
+    )  # Completa la primera tarea sin pausar
     tarea = gestor_temporal.tareas[0]
     assert tarea.completada  # Verifica que la tarea esté completada
+
 
 def test_eliminar_tarea(gestor_temporal):
     """Prueba eliminar una tarea en el gestor."""

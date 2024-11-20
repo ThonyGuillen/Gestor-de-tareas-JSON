@@ -61,7 +61,6 @@ class GestorTareas:
         if pausar:
             input("\nPresione Enter para continuar...")
 
-
     def completar_tarea(self, indice, pausar=True):
         try:
             self.tareas[indice - 1].completar()
@@ -70,7 +69,6 @@ class GestorTareas:
         except IndexError:
             return "Índice de tarea no válido."
         self.listar_tareas(pausar=pausar)
-
 
     def eliminar_tarea(self, indice, pausar=True):
         try:
