@@ -10,7 +10,6 @@ def limpiar_pantalla():
     else:
         os.system("clear")
 
-
 class Tarea:
     def __init__(
         self, titulo, descripcion, prioridad, fecha_creacion=None, completada=False
@@ -143,7 +142,7 @@ class GestorTareas:
 
 def mostrar_menu(gestor):
     print("\nGestor de Tareas")
-    print("----------------")
+    print("---------------------")
     print(f"Tareas totales: {gestor.contar_tareas()}")
     print("(1).- Agregar tarea")
     print("(2).- Listar tareas")
