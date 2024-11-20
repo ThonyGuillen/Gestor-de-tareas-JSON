@@ -2,11 +2,13 @@ import json
 import os
 from datetime import datetime
 
+
 def limpiar_pantalla():
-    if os.name == 'nt':
-        os.system('cls')
+    if os.name == "nt":
+        os.system("cls")
     else:
-        os.system('clear')
+        os.system("clear")
+
 
 class Tarea:
     def __init__(

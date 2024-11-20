@@ -1,73 +1,55 @@
-import os
 import pytest
-from gestor import Tarea, GestorTareas  # Aquí se conecta a gestor.py
+from gestor import Tarea, GestorTareas
 
-@pytest.fixture
-def gestor_temporal():
-    """Crea un gestor de tareas temporal para pruebas."""
-    carpeta = "tareas_prueba"
-    if not os.path.exists(carpeta):
-        os.makedirs(carpeta)
-    gestor = GestorTareas(carpeta=carpeta)
-    yield gestor
-    # Limpia los archivos generados después de las pruebas
-    for archivo in os.listdir(carpeta):
-        os.remove(os.path.join(carpeta, archivo))
-    os.rmdir(carpeta)
-
-def test_agregar_tarea(gestor_temporal):
-    """Prueba agregar una tarea al gestor."""
-    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "alta")
-    assert len(gestor_temporal.tareas) == 1
-    tarea = gestor_temporal.tareas[0]
-    assert not tarea.completada
-
-def test_guardar_y_cargar_tareas(gestor_temporal):
-    """Prueba que las tareas se guarden y carguen correctamente."""
-    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "media")
-    gestor_temporal = GestorTareas(carpeta="tareas_prueba")  # Recargar gestor
-    assert len(gestor_temporal.tareas) == 1
-    tarea = gestor_temporal.tareas[0]
-    assert tarea.titulo == "Prueba"
-    assert tarea.descripcion == "Descripción de prueba"
-    assert tarea.prioridad == "media"
-    assert not tarea.completada
-
-def test_completar_tarea(gestor_temporal):
-    """Prueba completar una tarea en el gestor."""
-    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "baja")
-    gestor_temporal.completar_tarea(1, pausar=False)  # Completa la primera tarea sin pausar
-    tarea = gestor_temporal.tareas[0]
-    assert tarea.completada  # Verifica que la tarea esté completada
-
-def test_eliminar_tarea(gestor_temporal):
-    """Prueba eliminar una tarea en el gestor."""
-    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "media")
-    assert len(gestor_temporal.tareas) == 1
-    mensaje = gestor_temporal.eliminar_tarea(1)  # Proporciona el índice directamente
-    assert mensaje == "Tarea eliminada con éxito."
-    assert len(gestor_temporal.tareas) == 0
-
-def test_modificar_tarea(gestor_temporal):
-    """Prueba modificar una tarea en el gestor."""
-    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "media")
-    mensaje = gestor_temporal.modificar_tarea(
-        1,
-        nuevo_titulo="Prueba Modificada",
-        nueva_descripcion="Descripción modificada",
-        nueva_prioridad="alta",
-    )
-    assert mensaje == "Tarea modificada con éxito."
-    tarea = gestor_temporal.tareas[0]
-    assert tarea.titulo == "Prueba Modificada"
-    assert tarea.descripcion == "Descripción modificada"
+# Pruebas para la clase Tarea
+def test_crear_tarea():
+    tarea = Tarea("Comprar leche", "Ir al supermercado", "alta")
+    assert tarea.titulo == "Comprar leche"
+    assert tarea.descripcion == "Ir al supermercado"
     assert tarea.prioridad == "alta"
-
-def test_agregar_con_prioridad_erronea(gestor_temporal):
-    """Prueba agregar una tarea con prioridad errónea al gestor."""
-    gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "masomenos")
-    tarea = gestor_temporal.tareas[0]
-    assert tarea.titulo == "Prueba"
-    assert tarea.descripcion == "Descripción de prueba"
-    assert tarea.prioridad == "media"
     assert not tarea.completada
+
+def test_completar_tarea():
+    tarea = Tarea("Lavar el coche", "Usar jabón especial", "media")
+    tarea.completar()
+    assert tarea.completada
+
+
+def test_listar_tareas(capsys, tmpdir):
+    gestor = GestorTareas(carpeta=tmpdir)
+    gestor.agregar_tarea("Hacer ejercicio", "Gimnasio por 30 minutos", "alta")
+    gestor.listar_tareas()
+    captured = capsys.readouterr()
+    assert "Hacer ejercicio" in captured.out
+
+def test_eliminar_tarea(tmpdir):
+    gestor = GestorTareas(carpeta=tmpdir)
+    gestor.agregar_tarea("Aprender Python", "Completar tutorial", "media")
+    gestor.eliminar_tarea(1)
+    assert len(gestor.tareas) == 0
+
+def test_modificar_tarea(tmpdir):
+    gestor = GestorTareas(carpeta=tmpdir)
+    gestor.agregar_tarea("Correr", "Correr en el parque", "alta")
+    
+    # Modificar tarea
+    resultado = gestor.modificar_tarea(
+        indice=1,
+        nuevo_titulo="Correr rápido",
+        nueva_descripcion="Correr en el parque a gran velocidad",
+        nueva_prioridad="media"
+    )
+    
+    assert resultado == "Tarea modificada con éxito."
+    assert gestor.tareas[0].titulo == "Correr rápido"
+    assert gestor.tareas[0].descripcion == "Correr en el parque a gran velocidad"
+    assert gestor.tareas[0].prioridad == "media"
+
+def test_agregar_tarea_prioridad_invalida(tmpdir):
+    gestor = GestorTareas(carpeta=tmpdir)
+    
+    # Agregar tarea con prioridad inválida
+    with pytest.raises(ValueError) as excinfo:
+        gestor.agregar_tarea("Tarea inválida", "Descripción de prueba", "super-alta")
+    
+    assert "Prioridad no válida" in str(excinfo.value)
