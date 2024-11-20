@@ -2,7 +2,7 @@ import pytest
 from gestor import Tarea, GestorTareas
 
 
-# Pruebas para la clase Tarea
+#  Pruebas unitarias
 def test_crear_tarea():
     tarea = Tarea("Comprar leche", "Ir al supermercado", "alta")
     assert tarea.titulo == "Comprar leche"
@@ -34,7 +34,7 @@ def test_eliminar_tarea(tmpdir):
 
 def test_modificar_tarea(tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
-    gestor.agregar_tarea("Correr", "Correr en el parque ", "alta")
+    gestor.agregar_tarea("Correr", "Correr en el parque", "alta")
 
     # Modificar tarea
     resultado = gestor.modificar_tarea(
@@ -46,6 +46,6 @@ def test_modificar_tarea(tmpdir):
 
     assert resultado == "Tarea modificada con éxito."
     assert gestor.tareas[0].titulo == "Correr rápido"
-    assert gestor.tareas[0].descripcion == "Correr en el parque a  gran velocidad"
-    assert gestor.tareas[0].prioridad == "media"
-
+    assert gestor.tareas[0].descripcion == "Correr en el parque a gran velocidad"
+    assert gestor.tareas[0].prioridad == "media" 
+    
