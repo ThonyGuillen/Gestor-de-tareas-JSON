@@ -1,6 +1,7 @@
 import pytest
 from gestor import Tarea, GestorTareas
 
+
 # Pruebas para la clase Tarea
 def test_crear_tarea():
     tarea = Tarea("Comprar leche", "Ir al supermercado", "alta")
@@ -9,10 +10,12 @@ def test_crear_tarea():
     assert tarea.prioridad == "alta"
     assert not tarea.completada
 
+
 def test_completar_tarea():
     tarea = Tarea("Lavar el coche", "Usar jabón especial", "media")
     tarea.completar()
     assert tarea.completada
+
 
 def test_listar_tareas(capsys, tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
@@ -21,34 +24,39 @@ def test_listar_tareas(capsys, tmpdir):
     captured = capsys.readouterr()
     assert "Hacer ejercicio" in captured.out
 
+
 def test_eliminar_tarea(tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
     gestor.agregar_tarea("Aprender Python", "Completar tutorial", "media")
     gestor.eliminar_tarea(1)
     assert len(gestor.tareas) == 0
 
+
 def test_modificar_tarea(tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
     gestor.agregar_tarea("Correr", "Correr en el parque", "alta")
-    
+
     # Modificar tarea
     resultado = gestor.modificar_tarea(
         indice=1,
         nuevo_titulo="Correr rápido",
         nueva_descripcion="Correr en el parque a gran velocidad",
-        nueva_prioridad="media"
+        nueva_prioridad="media",
     )
-    
+
     assert resultado == "Tarea modificada con éxito."
     assert gestor.tareas[0].titulo == "Correr rápido"
     assert gestor.tareas[0].descripcion == "Correr en el parque a gran velocidad"
     assert gestor.tareas[0].prioridad == "media"
 
+
 def test_agregar_tarea_prioridad_invalida(tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
-    
+
     # Agregar tarea con prioridad inválida
     with pytest.raises(ValueError) as excinfo:
         gestor.agregar_tarea("Tarea inválida", "Descripción de prueba", "super-alta")
-    
-    assert "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'." in str(excinfo.value)
+
+    assert "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'." in str(
+        excinfo.value
+    )
