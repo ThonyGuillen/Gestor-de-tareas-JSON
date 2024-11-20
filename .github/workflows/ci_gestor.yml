@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: 3.9
 
     - name: Install dependencies
       run: |
@@ -27,4 +27,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run tests
-      run: pytest --maxfail=5 --disable-warnings -v
+      run: pytest
+
+    - name: Run static code analysis
+      run: flake8 .
