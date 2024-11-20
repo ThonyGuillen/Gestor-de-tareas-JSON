@@ -142,14 +142,14 @@ class GestorTareas:
 
 def mostrar_menu(gestor):
     print("\nGestor de Tareas")
-    print("---------------------")
+    print("------------------")
     print(f"Tareas totales: {gestor.contar_tareas()}")
-    print("(1).- Agregar tarea")
-    print("(2).- Listar tareas")
-    print("(3).- Completar tarea")
-    print("(4).- Eliminar tarea")
-    print("(5).- Modificar tarea")
-    print("(6).- Salir")
+    print("(1) Agregar tarea")
+    print("(2) Listar tareas")
+    print("(3) Completar tarea")
+    print("(4) Eliminar tarea")
+    print("(5) Modificar tarea")
+    print("(6) Salir")
 
 
 def main(args):
