@@ -34,18 +34,18 @@ def test_eliminar_tarea(tmpdir):
 
 def test_modificar_tarea(tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
-    gestor.agregar_tarea("Correr", "Correr en la cancha de ciclismo", "alta")
+    gestor.agregar_tarea("Correr", "Correr en el parque ", "alta")
 
     # Modificar tarea
     resultado = gestor.modificar_tarea(
         indice=1,
         nuevo_titulo="Correr rápido",
-        nueva_descripcion="Correr en una chanca de ciclismo a gran velocidad",
+        nueva_descripcion="Correr en el parque a gran velocidad",
         nueva_prioridad="media",
     )
 
     assert resultado == "Tarea modificada con éxito."
     assert gestor.tareas[0].titulo == "Correr rápido"
-    assert gestor.tareas[0].descripcion == "Correr en na chanca de ciclismo a  gran velocidad"
+    assert gestor.tareas[0].descripcion == "Correr en el parque a  gran velocidad"
     assert gestor.tareas[0].prioridad == "media"
 
