@@ -2,7 +2,7 @@ import pytest
 from gestor import Tarea, GestorTareas
 
 
-# Pruebas para la clase Tarea
+# Pruebas unitarias
 def test_crear_tarea():
     tarea = Tarea("Comprar leche", "Ir al supermercado", "alta")
     assert tarea.titulo == "Comprar leche"
