@@ -30,9 +30,7 @@ class Tarea:
 
     def __str__(self):
         estado = "Completada" if self.completada else "Pendiente"
-        return (
-            f"{self.titulo} - {self.descripcion} - {self.prioridad} - {self.fecha_creacion} - {estado}"
-        )
+        return f"{self.titulo} - {self.descripcion} - {self.prioridad} - {self.fecha_creacion} - {estado}"
 
     @classmethod
     def from_dict(cls, data):
@@ -53,14 +51,15 @@ class GestorTareas:
 
     def agregar_tarea(self, titulo, descripcion, prioridad):
         if prioridad not in ["baja", "media", "alta"]:
-            raise ValueError(f"Prioridad '{prioridad}' no válida. Use 'baja', 'media' o 'alta'.")
-        
+            raise ValueError(
+                f"Prioridad '{prioridad}' no válida. Use 'baja', 'media' o 'alta'."
+            )
+
         tarea = Tarea(titulo, descripcion, prioridad)
         self.tareas.append(tarea)
         self.guardar_tareas()
         print("Tarea agregada con éxito.")
         self.limpiar_terminal()
-
 
     def listar_tareas(self, pausar=True):
         limpiar_pantalla()
@@ -190,7 +189,9 @@ def main(args):
                 titulo = input("Título de la tarea: ")
                 descripcion = input("Descripción de la tarea: ")
                 while True:
-                    prioridad = input("Nivel de prioridad (baja, media, alta): ").lower()
+                    prioridad = input(
+                        "Nivel de prioridad (baja, media, alta): "
+                    ).lower()
                     if prioridad in ["baja", "media", "alta"]:
                         break
                     else:
@@ -233,7 +234,11 @@ def main(args):
                     nueva_prioridad = input(
                         "Nueva prioridad (baja, media, alta) (dejar en blanco para no modificar): "
                     ).lower()
-                    if nueva_prioridad and nueva_prioridad not in ["baja", "media", "alta"]:
+                    if nueva_prioridad and nueva_prioridad not in [
+                        "baja",
+                        "media",
+                        "alta",
+                    ]:
                         print(
                             "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'."
                         )
