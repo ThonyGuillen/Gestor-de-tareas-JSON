@@ -1,4 +1,4 @@
-name: Pytest con test_gestor.py
+name: Pytest Pipeline
 
 on:
   push:
@@ -13,18 +13,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    # 1. Clonar el repositorio
+    - name: Checkout repository
       uses: actions/checkout@v3
 
+    # 2. Configurar Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: 3.9
 
+    # 3. Instalar dependencias
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest
 
-    - name: Run pytest on test_gestor.py
-      run: pytest test_gestor.py --maxfail=5 --disable-warnings -v
+    # 4. Ejecutar pruebas
+    - name: Run pytest
+      run: pytest
