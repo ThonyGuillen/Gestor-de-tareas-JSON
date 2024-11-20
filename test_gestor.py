@@ -46,6 +46,6 @@ def test_modificar_tarea(tmpdir):
 
     assert resultado == "Tarea modificada con éxito."
     assert gestor.tareas[0].titulo == "Correr rápido"
-    assert gestor.tareas[0].descripcion == "Correr en el parque a gran velocidad"
+    assert gestor.tareas[0].descripcion == "Correr en el parque a una gran velocidad"
     assert gestor.tareas[0].prioridad == "media" 
     
