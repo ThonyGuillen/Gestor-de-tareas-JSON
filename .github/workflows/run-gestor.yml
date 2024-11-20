@@ -24,5 +24,5 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Gestor
-        run: python gestor.py
+      - name: Run Gestor in Non-Interactive Mode
+        run: python gestor.py --no-interactive
