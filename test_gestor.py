@@ -17,7 +17,6 @@ def gestor_temporal():
     os.rmdir(carpeta)
 
 
-
 def test_agregar_tarea(gestor_temporal):
     """Prueba agregar una tarea al gestor."""
     gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "alta")
@@ -63,7 +62,12 @@ def test_eliminar_tarea(gestor_temporal):
 def test_modificar_tarea(gestor_temporal):
     """Prueba modificar una tarea en el gestor."""
     gestor_temporal.agregar_tarea("Prueba", "Descripción de prueba", "media")
-    mensaje = gestor_temporal.modificar_tarea(1, nuevo_titulo="Prueba Modificada", nueva_descripcion="Descripción modificada", nueva_prioridad="alta")
+    mensaje = gestor_temporal.modificar_tarea(
+        1,
+        nuevo_titulo="Prueba Modificada",
+        nueva_descripcion="Descripción modificada",
+        nueva_prioridad="alta",
+    )
     assert mensaje == "Tarea modificada con éxito."
     tarea = gestor_temporal.tareas[0]
     assert tarea.titulo == "Prueba Modificada"

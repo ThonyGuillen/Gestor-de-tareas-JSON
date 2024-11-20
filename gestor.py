@@ -2,6 +2,11 @@ import json
 import os
 from datetime import datetime
 
+def limpiar_pantalla():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 class Tarea:
     def __init__(
@@ -79,10 +84,17 @@ class GestorTareas:
             return "Índice de tarea no válido."
         self.listar_tareas(pausar=pausar)
 
-    def modificar_tarea(self, indice, nuevo_titulo=None, nueva_descripcion=None, nueva_prioridad=None, pausar=True):
+    def modificar_tarea(
+        self,
+        indice,
+        nuevo_titulo=None,
+        nueva_descripcion=None,
+        nueva_prioridad=None,
+        pausar=True,
+    ):
         if not self.tareas:
             return "No hay tareas para modificar. CREA UNA."
-        
+
         try:
             tarea = self.tareas[indice - 1]
             if nuevo_titulo:
@@ -102,7 +114,7 @@ class GestorTareas:
         for archivo in os.listdir(self.carpeta):
             if archivo.startswith("Tarea") and archivo.endswith(".json"):
                 os.remove(os.path.join(self.carpeta, archivo))
-        
+
         # Guardar las tareas actuales con nombres actualizados
         for i, tarea in enumerate(self.tareas, 1):
             archivo_tarea = os.path.join(self.carpeta, f"Tarea{i}.json")
@@ -122,7 +134,7 @@ class GestorTareas:
         return len(self.tareas)
 
     def limpiar_terminal(self):
-        os.system("cls" if os.name == "nt" else "clear")
+        limpiar_pantalla()
 
 
 def mostrar_menu(gestor):
@@ -138,6 +150,7 @@ def mostrar_menu(gestor):
 
 
 def main():
+    limpiar_pantalla()
     gestor = GestorTareas()
 
     while True:
@@ -145,6 +158,7 @@ def main():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
+            limpiar_pantalla()
             titulo = input("Título de la tarea: ")
             descripcion = input("Descripción de la tarea: ")
             while True:
@@ -152,7 +166,9 @@ def main():
                 if prioridad in ["baja", "media", "alta"]:
                     break
                 else:
-                    print("Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'.")
+                    print(
+                        "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'."
+                    )
             gestor.agregar_tarea(titulo, descripcion, prioridad)
         elif opcion == "2":
             gestor.listar_tareas()
@@ -177,13 +193,26 @@ def main():
                 if indice < 1 or indice > gestor.contar_tareas():
                     print("Índice de tarea no válido.")
                     continue
-                nuevo_titulo = input("Nuevo título (dejar en blanco para no modificar): ")
-                nueva_descripcion = input("Nueva descripción (dejar en blanco para no modificar): ")
-                nueva_prioridad = input("Nueva prioridad (baja, media, alta) (dejar en blanco para no modificar): ").lower()
+                nuevo_titulo = input(
+                    "Nuevo título (dejar en blanco para no modificar): "
+                )
+                nueva_descripcion = input(
+                    "Nueva descripción (dejar en blanco para no modificar): "
+                )
+                nueva_prioridad = input(
+                    "Nueva prioridad (baja, media, alta) (dejar en blanco para no modificar): "
+                ).lower()
                 if nueva_prioridad and nueva_prioridad not in ["baja", "media", "alta"]:
-                    print("Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'.")
+                    print(
+                        "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'."
+                    )
                     continue
-                gestor.modificar_tarea(indice, nuevo_titulo or None, nueva_descripcion or None, nueva_prioridad or None)
+                gestor.modificar_tarea(
+                    indice,
+                    nuevo_titulo or None,
+                    nueva_descripcion or None,
+                    nueva_prioridad or None,
+                )
             except ValueError:
                 print("Por favor, ingrese un número válido.")
         elif opcion == "6":
@@ -192,6 +221,7 @@ def main():
         else:
             print("Opción no válida.")
             gestor.limpiar_terminal()
+
 
 if __name__ == "__main__":
     main()
