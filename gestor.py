@@ -82,3 +82,4 @@ class GestorTareas:
 
     def contar_tareas(self):
         return len(self.tareas)
+    
