@@ -14,7 +14,6 @@ def test_completar_tarea():
     tarea.completar()
     assert tarea.completada
 
-
 def test_listar_tareas(capsys, tmpdir):
     gestor = GestorTareas(carpeta=tmpdir)
     gestor.agregar_tarea("Hacer ejercicio", "Gimnasio por 30 minutos", "alta")
@@ -52,4 +51,4 @@ def test_agregar_tarea_prioridad_invalida(tmpdir):
     with pytest.raises(ValueError) as excinfo:
         gestor.agregar_tarea("Tarea inválida", "Descripción de prueba", "super-alta")
     
-    assert "Prioridad no válida" in str(excinfo.value)
+    assert "Prioridad no válida. Por favor, ingrese 'baja', 'media' o 'alta'." in str(excinfo.value)
